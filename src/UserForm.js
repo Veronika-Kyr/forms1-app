@@ -46,7 +46,7 @@ export default function UserForm() {
         const clone = { ...formState };
         clone[field] = value;
         setFormState(clone);
-    }
+    };
 
     function handleSauces(event) {
         let arrOFsauces = [...formState.sauces];
@@ -57,7 +57,7 @@ export default function UserForm() {
             arrOFsauces.splice(arrOFsauces.indexOf(event.target.value), 1);
         };
         changeState(arrOFsauces, 'sauces');
-    }
+    };
 
     function fieldValidator() {
         let s = 0;
@@ -66,7 +66,7 @@ export default function UserForm() {
         if (!/^[a-zA-Z\s]+$/.test(formState.lastName)) { setlastnameclassName('redBorder'); } else { s = s + 1; }
         if (formState.notes && formState.notes.length > 100) { setnotesclassName('redBorder'); } else { s = s + 1; }
         if (s === 4) { return true } else alert('Correct your inputs!');
-    }
+    };
 
     function submitData(event) {
         event.preventDefault();
@@ -79,7 +79,51 @@ export default function UserForm() {
             setnotesclassName('inputEqualWidth');
             alert(JSON.stringify(formState));
         }
-    }
+    };
+
+    function handleFirstName(event) {
+        if (!clickSubmit) { changeState(event.target.value, 'firstName') }
+        else {
+            if (!/^[a-zA-Z\s]+$/.test(event.target.value)) { setfirstnameclassName('redBorder'); }
+            else {
+                changeState(event.target.value, 'firstName')
+                setfirstnameclassName('inputEqualWidth');
+            }
+        }
+    };
+
+    function handleLastName(event) {
+        if (!clickSubmit) { changeState(event.target.value, 'lastName') }
+        else {
+            if (!/^[a-zA-Z\s]+$/.test(event.target.value)) { setlastnameclassName('redBorder'); }
+            else {
+                changeState(event.target.value, 'lastName');
+                setlastnameclassName('inputEqualWidth');
+            }
+        }
+    };
+
+    function handleAge(event) {
+        if (!clickSubmit) { changeState(event.target.value, 'age') }
+        else {
+            if (!/^\d+$/.test(event.target.value)) { setageclassName('redBorder'); }
+            else {
+                changeState(event.target.value, 'age');
+                setageclassName('inputEqualWidth');
+            }
+        }
+    };
+
+    function handleNotes(event) {
+        if (!clickSubmit) { changeState(event.target.value, 'notes') }
+        else {
+            if (event.target.value && event.target.value.length > 100) { setnotesclassName('redBorder'); }
+            else {
+                changeState(event.target.value, 'notes');
+                setnotesclassName('inputEqualWidth');
+            }
+        }
+    };
 
     return (
         <div className="userForm">
@@ -88,16 +132,7 @@ export default function UserForm() {
                     <div>First Name</div>
                     <div>
                         <label className="general">
-                            <input className={firstnameclassName} type="text" onChange={(event) => {
-                                if (!clickSubmit) { changeState(event.target.value, 'firstName') }
-                                else {
-                                    if (!/^[a-zA-Z\s]+$/.test(event.target.value)) { setfirstnameclassName('redBorder'); }
-                                    else {
-                                        changeState(event.target.value, 'firstName')
-                                        setfirstnameclassName('inputEqualWidth');
-                                    }
-                                }
-                            }} placeholder='First Name' />
+                            <input className={firstnameclassName} type="text" onChange={handleFirstName} placeholder='First Name' />
                         </label>
                     </div>
                 </div>
@@ -105,32 +140,14 @@ export default function UserForm() {
                     <div>Last Name</div>
                     <div>
                         <label className="general">
-                            <input className={lastnameclassName} type="text" onChange={(event) => {
-                                if (!clickSubmit) { changeState(event.target.value, 'lastName') }
-                                else {
-                                    if (!/^[a-zA-Z\s]+$/.test(event.target.value)) { setlastnameclassName('redBorder'); }
-                                    else {
-                                        changeState(event.target.value, 'lastName');
-                                        setlastnameclassName('inputEqualWidth');
-                                    }
-                                }
-                            }} placeholder='Last Name' />
+                            <input className={lastnameclassName} type="text" onChange={handleLastName} placeholder='Last Name' />
                         </label>
                     </div>
                 </div>
                 <div className="choice">
                     <div>Age</div>
                     <div>  <label className="general">
-                        <input type="text" className={ageclassName} onChange={(event) => {
-                            if (!clickSubmit) { changeState(event.target.value, 'age') }
-                            else {
-                                if (!/^\d+$/.test(event.target.value)) { setageclassName('redBorder'); }
-                                else {
-                                    changeState(event.target.value, 'age');
-                                    setageclassName('inputEqualWidth');
-                                }
-                            }
-                        }} placeholder='Age' />
+                        <input type="text" className={ageclassName} onChange={handleAge} placeholder='Age' />
                     </label></div>
                 </div>
                 <div className="choice">
@@ -168,16 +185,7 @@ export default function UserForm() {
                     </div> </div>
                 <div className="choice">
                     <div>Notes</div>
-                    <div>  <label> <textarea className={notesclassName} placeholder="Notes" maxLength={100} name="text1" cols="30" rows="10" onChange={(event) => {
-                        if (!clickSubmit) { changeState(event.target.value, 'notes') }
-                        else {
-                            if (event.target.value && event.target.value.length > 100) { setnotesclassName('redBorder'); }
-                            else {
-                                changeState(event.target.value, 'notes');
-                                setnotesclassName('inputEqualWidth');
-                            }
-                        }
-                    }}></textarea> </label></div>
+                    <div>  <label> <textarea className={notesclassName} placeholder="Notes" maxLength={100} name="text1" cols="30" rows="10" onChange={handleNotes}></textarea> </label></div>
                 </div>
                 <div className="btn">
                     <button className="btnS" type="submit" disabled={disabledBtn} >Submit</button>
